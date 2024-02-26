@@ -3,7 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ public class FacultyService {
     private Map<Long, Faculty> facultyMap = new HashMap<>();
     private long lastId = 1;
 
-    @PostConstruct
+//    @PostConstruct
     public void initStudents() {
         add(new Faculty("Grifindor", "Red"));
         add(new Faculty("Slizerin", "Grey"));
