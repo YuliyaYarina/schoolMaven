@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
@@ -15,7 +16,7 @@ public class StudentService {
     private final HashMap<Long, Student> studentMap = new HashMap<>();
     private static long studentId = 1;
 
-//    @PostConstruct
+    @PostConstruct
     public void initStudents() {
         add(new Student("ivan", 33));
         add(new Student("Dmitry", 10));
