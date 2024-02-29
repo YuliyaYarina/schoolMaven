@@ -40,8 +40,9 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public Faculty deleteBook(@PathVariable long id){
-        return facultyService.deleteFaculty(id);
+    public ResponseEntity deleteBook(@PathVariable Long id){
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/color")

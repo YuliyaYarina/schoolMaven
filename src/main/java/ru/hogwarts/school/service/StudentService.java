@@ -1,9 +1,13 @@
 package ru.hogwarts.school.service;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    private final HashMap<Long, Student> studentMap = new HashMap<>();
-    private static long studentId = 1;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @PostConstruct
     public void initStudents() {
@@ -22,33 +29,32 @@ public class StudentService {
     }
 
     public Student add(Student student) {
-        student.setId(studentId++);
-        studentMap.put(student.getId(), student);
-        return student;
+        return studentRepository.save(student);
     }
 
-    public Student findStudentById(long id) {
-        return studentMap.get(id);
+    public Student findStudentById(Long id) {
+        return studentRepository.findById(id).orElseThrow(StudentNFE::new);
     }
     public Collection<Student> getAllStudent() {
-        return studentMap.values();
+        return studentRepository.findAll();
     }
 
     public Student editStudent(Long id, Student student) {
-        Student student1= studentMap.get(id);
-        student1.setName(student.getName());
-        student1.setAge(student.getAge());
-        return student1;
+        return studentRepository.findById(id).map(student1 -> {
+            student1.setName(student.getName());
+            student1.setAge(student.getAge());
+            return studentRepository.save(student1);
+        }).orElse(null);
     }
 
-    public Student deleteStudent(long Id) {
-        return studentMap.remove(Id);
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
 
     public List<Student> getAgeStusent(int age) {
-        return studentMap.values()
-                        .stream()
-                .filter(s->s.getAge() == age)
+        return studentRepository.findAll()
+                .stream()
+                .filter(f->f.getAge() == age)
                 .collect(Collectors.toList());
     }
 }
