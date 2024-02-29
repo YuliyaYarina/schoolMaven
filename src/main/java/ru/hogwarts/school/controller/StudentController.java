@@ -35,8 +35,6 @@ public class StudentController {
         }
         return studentService.getAllStudent();
     }
-
-
     @PutMapping("{id}")
     public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
         return studentService.editStudent(id, student);
@@ -51,7 +49,7 @@ public class StudentController {
         return studentService.getAgeStusent(age);
     }
 
-    @GetMapping
+    @GetMapping("/max&minAge")
     public Collection<Student> getByAgeBetween(@RequestParam int ageFrom,
                                                @RequestParam int ageTo) {
         return studentService.findByAge(ageFrom, ageTo);

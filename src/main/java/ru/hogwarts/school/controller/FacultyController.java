@@ -30,10 +30,10 @@ public class FacultyController {
         }
         return ResponseEntity.ok(faculty);
     }
-    @GetMapping
-    private ResponseEntity<Collection<Faculty>> getAllFaculty () {
-        return ResponseEntity.ok(facultyService.getAllFaculty());
-    }
+//    @GetMapping
+//    private ResponseEntity<Collection<Faculty>> getAllFaculty () {
+//        return ResponseEntity.ok(facultyService.getAllFaculty());
+//    }
     @PutMapping("{id}")
     public Faculty updateFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
         return facultyService.editFaculty(id, faculty);
@@ -49,8 +49,8 @@ public class FacultyController {
     public Collection<Faculty> filterColor(@RequestParam String color){
         return facultyService.getColorFaculty(color);
     }
-    @GetMapping("/filterColorAndName")
-    public Collection<Faculty> filterColorAndName(@RequestParam(required = false) String name,
+    @GetMapping
+    public Collection<Faculty> getAllFacultyfilterColorAndName(@RequestParam(required = false) String name,
                                                   @RequestParam(required = false) String color){
         if (name != null && !name.isBlank()){
             return facultyService.findByName(name);
@@ -64,7 +64,7 @@ public class FacultyController {
     public Collection<Student> getStudent(@PathVariable Long id) {
         return facultyService.getStudents(id);
     }
-    
+
 
 }
 
