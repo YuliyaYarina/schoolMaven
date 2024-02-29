@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 //import javax.annotation.PostConstruct;
@@ -35,7 +36,7 @@ public class FacultyService {
         return facultyRepository.findById(id).get();
     }
 
-    public Collection<Faculty> getAllFaculty() {
+    public List<Faculty> getAllFaculty() {
         return facultyRepository.findAll();
     }
 
@@ -51,11 +52,23 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public List<Faculty> getColorFaculty(String color) {
+    public Collection<Faculty> getColorFaculty(String color) {
         return facultyRepository.findAll()
                 .stream()
                 .filter(f->f.getColor().equals(color))
                 .collect(Collectors.toList());
+    }
+
+    public Collection<Faculty> findByName(String name){
+        return facultyRepository.findBookByNameContainsIgnoreCase(name);
+    }
+    public Collection<Faculty> findByColor(String color){
+        return facultyRepository.findBookByColorContainsIgnoreCase(color);
+    }
+    public Collection<Student> getStudents(Long id){
+        return facultyRepository.findById(id)
+                .map(Faculty::getStudents)
+                .orElse(null);
     }
 
 }
