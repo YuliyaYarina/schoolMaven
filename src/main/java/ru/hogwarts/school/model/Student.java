@@ -1,12 +1,13 @@
 package ru.hogwarts.school.model;
 
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Value;
 
 
 @Entity
 public class Student {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int age;
@@ -14,6 +15,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
+
+    @Value("${path.to.avatars.folder}")
+    private String avatarsDir;
 
     public Student() {
     }
@@ -58,5 +62,13 @@ public class Student {
     public Student(int age, Faculty faculty) {
         this.age = age;
         this.faculty = faculty;
+    }
+
+    public String getAvatarsDir() {
+        return avatarsDir;
+    }
+
+    public void setAvatarsDir(String avatarsDir) {
+        this.avatarsDir = avatarsDir;
     }
 }

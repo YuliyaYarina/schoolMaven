@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -14,18 +15,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class FacultyService {
 
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
-    }
-
-    @PostConstruct
-    public void initStudents() {
-        add(new Faculty("Grifindor", "Red"));
-        add(new Faculty("Slizerin", "Grey"));
     }
 
     public Faculty add(Faculty faculty) {
