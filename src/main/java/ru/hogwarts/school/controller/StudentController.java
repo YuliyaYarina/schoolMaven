@@ -44,14 +44,16 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/findAllStudent")
-//    public Collection<Student> findAllByAgeStudent(@RequestParam String name) {
-//        if (name != null && !name.isBlank()) {
-//            return studentService.findByName(name);
-//        }
-//        return studentService.getAllStudent();
-//    }
+
     @GetMapping
+    public Collection<Student> findAllByAgeStudent(@RequestParam(required = false) String name) {
+        if (name != null && !name.isBlank()) {
+            return studentService.findByName(name);
+        }
+        return studentService.getAllStudent();
+    }
+    @GetMapping("getByAge")
+
     public Collection<Student> getByAge(@RequestParam int age){
         return studentService.getByAge(age);
     }

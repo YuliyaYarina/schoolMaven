@@ -3,6 +3,9 @@ package ru.hogwarts.school.model;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Objects;
+
+
 
 @Entity
 public class Student {
@@ -72,4 +75,30 @@ public class Student {
     public void setAvatarsDir(String avatarsDir) {
         this.avatarsDir = avatarsDir;
     }
+
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", faculty=" + faculty +
+                ", avatarsDir='" + avatarsDir + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return age == student.age && Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(faculty, student.faculty) && Objects.equals(avatarsDir, student.avatarsDir);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, faculty, avatarsDir);
+    }
+
 }

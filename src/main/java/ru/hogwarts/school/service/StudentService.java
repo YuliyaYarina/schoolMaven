@@ -1,10 +1,14 @@
 package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
@@ -15,13 +19,21 @@ import java.util.stream.Collectors;
 @Transactional
 public class StudentService {
 
-    private final StudentRepository studentRepository;
+//    @Value("${avatars.dir.path}")
+//    private String avatarsDir;
 
-    public StudentService(StudentRepository studentRepository) {
+    private final StudentRepository studentRepository;
+//    private final AvatarRepository avatarRepository;
+
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
+
+//        this.avatarRepository = avatarRepository;
+
     }
 
     public Student add(Student student) {
+//        student.setId(null);
         return studentRepository.save(student);
     }
 
