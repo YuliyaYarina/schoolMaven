@@ -30,6 +30,7 @@ public class FacultyController {
         }
         return ResponseEntity.ok(faculty);
     }
+
 //    @GetMapping
 //    private ResponseEntity<Collection<Faculty>> getAllFaculty () {
 //        return ResponseEntity.ok(facultyService.getAllFaculty());

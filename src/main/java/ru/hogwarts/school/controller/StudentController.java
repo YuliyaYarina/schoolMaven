@@ -23,6 +23,7 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
+
     @PostMapping
     public Student add(@RequestBody Student student) {
         return studentService.add(student);

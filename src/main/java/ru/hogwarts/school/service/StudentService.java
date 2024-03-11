@@ -49,6 +49,7 @@ public class StudentService {
 //    public Student findById(Long id){
 //        return studentRepository.findByIdIgnoreCase(id);
 //    }
+
     public Collection<Student> findByName(String name){
         return studentRepository.findByName(name);
     }

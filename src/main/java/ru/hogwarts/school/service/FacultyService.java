@@ -36,6 +36,7 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
+
     public Faculty editFaculty(Long id, Faculty faculty) {
         return facultyRepository.findById(id).map(f -> {
             f.setName(faculty.getName());

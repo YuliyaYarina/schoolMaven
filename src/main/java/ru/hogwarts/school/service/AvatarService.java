@@ -38,6 +38,7 @@ public class AvatarService {
         Path path = saveToDisk(student, avatarFile);
         saveToDb(student, avatarFile, path);
     }
+
     public Avatar findAvatar(Long id){
         return avatarRepository.findById(id).orElseThrow();
     }
