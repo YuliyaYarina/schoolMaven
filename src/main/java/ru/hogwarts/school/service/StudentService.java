@@ -1,7 +1,9 @@
 package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Faculty;
@@ -25,7 +27,9 @@ public class StudentService {
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
+
 //        this.avatarRepository = avatarRepository;
+
     }
 
     public Student add(Student student) {
@@ -57,6 +61,7 @@ public class StudentService {
 //    public Student findById(Long id){
 //        return studentRepository.findByIdIgnoreCase(id);
 //    }
+
     public Collection<Student> findByName(String name){
         return studentRepository.findByName(name);
     }

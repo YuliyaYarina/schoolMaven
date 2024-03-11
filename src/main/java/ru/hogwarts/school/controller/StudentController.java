@@ -23,6 +23,7 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
+
     @PostMapping
     public Student add(@RequestBody Student student) {
         return studentService.add(student);
@@ -43,6 +44,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping
     public Collection<Student> findAllByAgeStudent(@RequestParam(required = false) String name) {
         if (name != null && !name.isBlank()) {
@@ -51,6 +53,7 @@ public class StudentController {
         return studentService.getAllStudent();
     }
     @GetMapping("getByAge")
+
     public Collection<Student> getByAge(@RequestParam int age){
         return studentService.getByAge(age);
     }

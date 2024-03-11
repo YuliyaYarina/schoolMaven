@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.util.Objects;
 
 
+
 @Entity
 public class Student {
     @Id
@@ -13,6 +14,7 @@ public class Student {
     private Long id;
     private String name;
     private int age;
+
 
     @ManyToOne
     @JoinColumn(name = "faculty_id")
@@ -74,6 +76,7 @@ public class Student {
         this.avatarsDir = avatarsDir;
     }
 
+
     @Override
     public String toString() {
         return "Student{" +
@@ -97,4 +100,5 @@ public class Student {
     public int hashCode() {
         return Objects.hash(id, name, age, faculty, avatarsDir);
     }
+
 }
