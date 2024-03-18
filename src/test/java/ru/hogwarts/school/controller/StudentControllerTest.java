@@ -5,21 +5,26 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,146 +32,195 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
-@WebMvcTest(StudentController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class StudentControllerTest {
+
     @LocalServerPort
     private int port;
 
     @Autowired
-    private MockMvc mockMvc;
-    
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private StudentService studentService;
-
-    @MockBean
     private StudentRepository studentRepository;
-
-    @MockBean
-    private AvatarService avatarService;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-
-//    @InjectMocks
-//    private StudentController studentController;
+//    @BeforeEach
+//    private void clearDataBase(){
+//        facultyRepository.deleteAll();
+//    }
 
     @Test
-    void add() throws Exception {
+    void createStudentTest() throws Exception {
         // given
-        Long studentId = 1L;
-        Student student = new Student("Ivan", 20);
-        Student savedStudent = new Student("Ivan", 20);
-        savedStudent.setId(studentId);
+        Student student = new Student("name", 20);
 
-        when(studentService.add(student)).thenReturn(savedStudent);
         // when
-        ResultActions perform = mockMvc.perform(post("/student")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(student)));
+        ResponseEntity<Student> studentResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/student",
+                student,
+                Student.class
+        );
 
         // then
-        perform
-                .andExpect(jsonPath("$.id").value(savedStudent.getId()))
-                .andExpect(jsonPath("$.age").value(savedStudent.getAge()))
-                .andExpect(jsonPath("$.name").value(savedStudent.getName()))
-                .andDo(print());
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualStudent = studentResponseEntity.getBody();
+        assertNotNull(actualStudent.getId());
+        assertEquals(actualStudent.getName(), student.getName());
+        org.assertj.core.api.Assertions.assertThat(actualStudent.getAge()).isEqualTo(student.getAge());
+
+//        facultyRepository.deleteById(actualFaculty.getId());
     }
 
     @Test
-    void get() throws Exception {
+    void getStudentTest() throws Exception {
         // given
-        Long studentId = 1L;
-        Student student = new Student("Ivan", 20);
+        Student student = new Student("name", 20);
+        student = studentRepository.save(student);
 
-        when(studentService.get(studentId)).thenReturn(student);
+        Long facultyId = 1L;
+
         // when
-        ResultActions perform = mockMvc.perform(MockMvcRequestBuilders.get("/student/{id}", studentId));
-
+        ResponseEntity<Student> studentResponseEntity = restTemplate.getForEntity(
+                "http://localhost:" + port + "/student/" + student.getId(),
+                Student.class
+        );
         // then
-        perform
-                .andExpect(jsonPath("$.name").value(student.getName()))
-                .andExpect(jsonPath("$.age").value(student.getAge()))
-                .andDo(print());
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualStudent = studentResponseEntity.getBody();
+        assertEquals(actualStudent.getId(), student.getId());
+        assertEquals(actualStudent.getName(), student.getName());
+        assertEquals(actualStudent.getAge(), student.getAge());
+
+//        assertNotNull(actualFaculty.getId());
+//        assertEquals(actualFaculty.getName(), faculty.getName());
+//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
 
     @Test
-    void put() throws Exception {
+    void updateStudentTest() {
         // given
-        Long studentId = 1L;
-        Student student = new Student("Ivan", 20);
+        Student student = new Student("name", 20);
+        student = studentRepository.save(student);
 
-        when(studentService.put(studentId, student)).thenReturn(student);
+        Student studentForUpdate = new Student("nawName", 1);
+
+
         // when
-        ResultActions perform = mockMvc.perform(MockMvcRequestBuilders.put("/student/{id}", studentId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(student)));
+        HttpEntity<Student> entity = new HttpEntity<>(studentForUpdate);
+        ResponseEntity<Student> studentResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/student/" + student.getId(),
+                HttpMethod.PUT,
+                entity,
+                Student.class
+        );
 
         // then
-        perform
-                .andExpect(jsonPath("$.name").value(student.getName()))
-                .andExpect(jsonPath("$.age").value(student.getAge()))
-                .andDo(print());
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualFaculty = studentResponseEntity.getBody();
+        assertEquals(actualFaculty.getId(), student.getId());
+        assertEquals(actualFaculty.getName(), studentForUpdate.getName());
+        assertEquals(actualFaculty.getAge(), studentForUpdate.getAge());
+
+//        assertNotNull(actualFaculty.getId());
+//        assertEquals(actualFaculty.getName(), faculty.getName());
+//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test
-    void deleteStudent() throws Exception {
-        long studentId = 1L;
-        Student student = new Student("Ivan", 20);
-
-//        when(studentService.delete(studentId)).thenReturn(student);
-//        // when
-        ResultActions perform = mockMvc.perform(MockMvcRequestBuilders.delete("/student/{Id}", studentId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(student)));
-
-
-        // then
-        perform
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-//                .andExpect(jsonPath("$.name").value(student.getName()))
-//                .andExpect(jsonPath("$.age").value(student.getAge()))
-                .andDo(print());
-    }
-
-    @Test
-    void findAllByAgeStudent() throws Exception{
+    void deleteStudent() {
         // given
-        Long studentId = 1L;
-        Student student = new Student("Ivan", 20);
-        String name = "Ivan";
+        Student student = new Student("name", 20);
+        student = studentRepository.save(student);
 
-        when(studentService.get(studentId)).thenReturn(student);
         // when
-        ResultActions perform = mockMvc.perform(MockMvcRequestBuilders.get("/student"));
+        ResponseEntity<Student> studentResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/student/" + student.getId(),
+                HttpMethod.DELETE,
+                null,
+                Student.class
+        );
 
         // then
-        perform
-                .andExpect(jsonPath("$.name").value(student.getName()))
-                .andExpect(jsonPath("$.age").value(student.getAge()))
-                .andDo(print());
-            Assertions
-                    .assertThat(this.restTemplate.getForObject("http://localhost:" + port, String.class))
-                    .isNotNull();
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Assertions.assertThat(studentRepository.findById(student.getId())).isNotPresent();
+//        Faculty actualFaculty = facultyResponseEntity.getBody();
+//        assertNotNull(actualFaculty.getId());
+//        assertEquals(actualFaculty.getName(), faculty.getName());
+//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test
-    void getByAge() {
+    void filterAge() {
+        // given
+        Student student =  new Student("name", 20);
+
+        // when
+        ResponseEntity<Student> studentResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/student",
+                student,
+                Student.class
+        );
+
+        // then
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualStudent = studentResponseEntity.getBody();
+        assertNotNull(actualStudent.getId());
+        assertEquals(actualStudent.getName(), student.getName());
+        org.assertj.core.api.Assertions.assertThat(actualStudent.getAge()).isEqualTo(student.getAge());
     }
 
     @Test
-    void getByAgeBetween() {
+    void getAllFacultyfilterColorAndName() {
+        // given
+        Student student =  new Student("name", 20);
+
+        // when
+        ResponseEntity<Student> studentResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/student",
+                student,
+                Student.class
+        );
+
+        // then
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualStudent = studentResponseEntity.getBody();
+        assertNotNull(actualStudent.getId());
+        assertEquals(actualStudent.getName(), student.getName());
+        org.assertj.core.api.Assertions.assertThat(actualStudent.getAge()).isEqualTo(student.getAge());
     }
 
     @Test
-    void getFaculty() {
-    }
+    void getStudent() {
+        // given
+        Student student =  new Student("name", 20);
 
-    @Test
-    void uploadAvatar() {
+        // when
+        ResponseEntity<Student> studentResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/student",
+                student,
+                Student.class
+        );
+
+        // then
+        assertNotNull(studentResponseEntity);
+        assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
+
+        Student actualStudent = studentResponseEntity.getBody();
+        assertNotNull(actualStudent.getId());
+        assertEquals(actualStudent.getName(), student.getName());
+        org.assertj.core.api.Assertions.assertThat(actualStudent.getAge()).isEqualTo(student.getAge());
     }
 }
