@@ -39,7 +39,7 @@ public class StudentController {
         return studentService.update(id, student);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteBStudent(@PathVariable Long id){
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
         studentService.delete(id);
         return ResponseEntity.ok().build();
     }
