@@ -2,8 +2,6 @@ package ru.hogwarts.school.service;
 
 import jakarta.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Faculty;
@@ -42,7 +40,7 @@ public class StudentService {
     }
 
 
-    public Student update(Long id, Student student) {
+    public Student put(Long id, Student student) {
         return studentRepository.findById(id).map(student1 -> {
             student1.setName(student.getName());
             student1.setAge(student.getAge());
