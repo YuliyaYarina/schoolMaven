@@ -77,4 +77,18 @@ public class StudentService {
                 .map(Student::getFaculty)
                 .orElse(null);
     }
+
+    public int getStudentQuantity() {
+        return studentRepository.getStudentQuantity();
+    }
+    public int getStudentsMiddleAge() {
+        return studentRepository.getStudentsMiddleAge();
+    }
+    public Collection<Student> findFiveStudents() {
+        return studentRepository.findFiveStudents();
+    }
+
+
+
+
 }
