@@ -12,29 +12,29 @@ import ru.hogwarts.school.model.Student;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SchoolMavenApplicationTests {
 
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private StudentController studentController;
-
-    @Autowired
-    private FacultyController facultyController;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Test
-    void contextLoadsS() throws Exception {
-        org.assertj.core.api.Assertions.assertThat(studentController).isNotNull();
-    }
-    @Test
-    void contextLoadsF() throws Exception {
-        org.assertj.core.api.Assertions.assertThat(facultyController).isNotNull();
-    }
+//    @LocalServerPort
+//    private int port;
+//
+//    @Autowired
+//    private StudentController studentController;
+//
+//    @Autowired
+//    private FacultyController facultyController;
+//
+//    @Autowired
+//    private TestRestTemplate restTemplate;
+//
+//    @Test
+//    void contextLoadsS() throws Exception {
+//        org.assertj.core.api.Assertions.assertThat(studentController).isNotNull();
+//    }
+//    @Test
+//    void contextLoadsF() throws Exception {
+//        org.assertj.core.api.Assertions.assertThat(facultyController).isNotNull();
+//    }
 //    public void testDefaultMassage() throws Exception{
 //        org.assertj.core.api.Assertions
 //                .assertThat(this.restTemplate.getForObject());

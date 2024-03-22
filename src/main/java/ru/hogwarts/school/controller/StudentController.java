@@ -39,7 +39,7 @@ public class StudentController {
         return studentService.update(id, student);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteBStudent(@PathVariable Long id){
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
         studentService.delete(id);
         return ResponseEntity.ok().build();
     }
@@ -58,13 +58,13 @@ public class StudentController {
         return studentService.getByAge(age);
     }
 
-    @GetMapping("/max&minAge")
+    @GetMapping("/ageMinMax")
     public Collection<Student> getByAgeBetween(@RequestParam int ageFrom,
                                                @RequestParam int ageTo) {
         return studentService.getByAgeBetween(ageFrom, ageTo);
     }
 
-    @GetMapping("{id}/faculty")
+    @GetMapping("/faculty/{id}")
     public Faculty getFaculty(@PathVariable Long id) {
         return studentService.getFaculty(id);
     }

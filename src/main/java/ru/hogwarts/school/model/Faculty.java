@@ -62,4 +62,14 @@ public class Faculty {
         this.color = color;
         this.students = students;
     }
+
+    @Override
+    public String toString() {
+        return "Faculty{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color='" + color + '\'' +
+                ", students=" + students +
+                '}';
+    }
 }
