@@ -44,11 +44,6 @@ class StudentControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-//    @BeforeEach
-//    private void clearDataBase(){
-//        facultyRepository.deleteAll();
-//    }
-
     @Test
     void createStudentTest() throws Exception {
         // given
@@ -69,8 +64,6 @@ class StudentControllerTest {
         assertNotNull(actualStudent.getId());
         assertEquals(actualStudent.getName(), student.getName());
         org.assertj.core.api.Assertions.assertThat(actualStudent.getAge()).isEqualTo(student.getAge());
-
-//        facultyRepository.deleteById(actualFaculty.getId());
     }
 
     @Test
@@ -94,10 +87,6 @@ class StudentControllerTest {
         assertEquals(actualStudent.getId(), student.getId());
         assertEquals(actualStudent.getName(), student.getName());
         assertEquals(actualStudent.getAge(), student.getAge());
-
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
 
@@ -128,9 +117,6 @@ class StudentControllerTest {
         assertEquals(actualFaculty.getName(), studentForUpdate.getName());
         assertEquals(actualFaculty.getAge(), studentForUpdate.getAge());
 
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test
@@ -152,10 +138,6 @@ class StudentControllerTest {
         assertEquals(studentResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
 
         Assertions.assertThat(studentRepository.findById(student.getId())).isNotPresent();
-//        Faculty actualFaculty = facultyResponseEntity.getBody();
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test

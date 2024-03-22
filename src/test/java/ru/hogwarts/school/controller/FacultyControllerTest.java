@@ -28,11 +28,6 @@ class FacultyControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-//    @BeforeEach
-//    private void clearDataBase(){
-//        facultyRepository.deleteAll();
-//    }
-
     @Test
     void createFaculty() throws Exception {
         // given
@@ -53,8 +48,6 @@ class FacultyControllerTest {
         assertNotNull(actualFaculty.getId());
         assertEquals(actualFaculty.getName(), faculty.getName());
         org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
-
-//        facultyRepository.deleteById(actualFaculty.getId());
     }
 
     @Test
@@ -78,10 +71,6 @@ class FacultyControllerTest {
         assertEquals(actualFaculty.getId(), faculty.getId());
         assertEquals(actualFaculty.getName(), faculty.getName());
         assertEquals(actualFaculty.getColor(), faculty.getColor());
-
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
 
@@ -111,10 +100,6 @@ class FacultyControllerTest {
         assertEquals(actualFaculty.getId(), faculty.getId());
         assertEquals(actualFaculty.getName(), facultyForUpdate.getName());
         assertEquals(actualFaculty.getColor(), facultyForUpdate.getColor());
-
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test
@@ -136,10 +121,6 @@ class FacultyControllerTest {
         assertEquals(facultyResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
 
         Assertions.assertThat(facultyRepository.findById(faculty.getId())).isNotPresent();
-//        Faculty actualFaculty = facultyResponseEntity.getBody();
-//        assertNotNull(actualFaculty.getId());
-//        assertEquals(actualFaculty.getName(), faculty.getName());
-//        org.assertj.core.api.Assertions.assertThat(actualFaculty.getColor()).isEqualTo(faculty.getColor());
     }
 
     @Test
