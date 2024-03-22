@@ -18,7 +18,7 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty) {
+    public Faculty addFaculty(@RequestBody Faculty faculty) {
         return facultyService.add(faculty);
     }
 
@@ -36,7 +36,7 @@ public class FacultyController {
 //        return ResponseEntity.ok(facultyService.getAllFaculty());
 //    }
     @PutMapping("{id}")
-    public Faculty updateFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
+    public Faculty editFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
         return facultyService.editFaculty(id, faculty);
     }
 
