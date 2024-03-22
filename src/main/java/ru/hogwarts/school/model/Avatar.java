@@ -13,7 +13,7 @@ public class Avatar {
     private String filePath;
     private long fileSize;
     private String mediaType;
-    @Lob
+//    @Lob
     private byte[] data;
     @OneToOne
     @JoinColumn(name = "student_id")
