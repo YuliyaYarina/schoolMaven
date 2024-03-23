@@ -7,6 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.dto.AvatarDTO;
+import ru.hogwarts.school.expenses.Expense;
+import ru.hogwarts.school.mapper.AvatarMapper;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -18,21 +21,26 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/avatars")
 @RestController
 public class AvatarController {
     private final AvatarService avatarService;
 
-    public AvatarController(AvatarService avatarService) {
+    private final AvatarMapper avatarMapper;
+
+    public AvatarController(AvatarService avatarService, AvatarMapper avatarMapper) {
         this.avatarService = avatarService;
+        this.avatarMapper = avatarMapper;
     }
 
-//    @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
-//        avatarService.uploadAvatar(studentId, avatar);
-//        return ResponseEntity.ok().build();
-//    }
+        @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+        avatarService.uploadAvatar(studentId, avatar);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping(value = "/{id}/avatar-from-db")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
@@ -60,6 +68,18 @@ public class AvatarController {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @GetMapping
+    public  List<AvatarDTO> getAllAvatar(
+            @RequestParam("page") Integer pageNumber,
+            @RequestParam("size") Integer pageSize
+    ) {
+//        List<Avatar> avatar = avatarService.getAllAvatar(pageNumber, pageSize);
+        return avatarService.getAllAvatar(pageNumber, pageSize)
+                .stream()
+                .map(avatarMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 
 }
