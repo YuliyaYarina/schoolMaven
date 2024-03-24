@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping("/faculty")
 @RestController
@@ -66,7 +67,11 @@ public class FacultyController {
         return facultyService.getStudents(id);
     }
 
-
+    @GetMapping("/name/{name}/color/{color}")
+    public ResponseEntity<List<Faculty>> getFacultiesByNameAndColor(@PathVariable("name") String name, @PathVariable("color") String color){
+        List<Faculty> faculties = facultyService.getFacultiesByNameAndColor(name, color);
+        return ResponseEntity.ok(faculties);
+    }
 }
 
 

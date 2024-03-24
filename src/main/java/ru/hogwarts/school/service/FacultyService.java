@@ -68,5 +68,9 @@ public class FacultyService {
                 .orElse(null);
     }
 
+    public List<Faculty> getFacultiesByNameAndColor(String name, String color) {
+        return facultyRepository.getFacultiesByNameAndColor(name, color);
+    }
+
 }
 

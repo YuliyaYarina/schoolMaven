@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RequestMapping("/student")
 @RestController
@@ -75,5 +76,11 @@ public class StudentController {
             throws IOException {
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Student>> getStudentsByName(@PathVariable("name") String name){
+        List<Student> students = studentService.getStudentsByName(name);
+        return ResponseEntity.ok(students);
     }
 }
