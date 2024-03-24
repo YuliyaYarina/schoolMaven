@@ -78,8 +78,7 @@ public class FacultyController {
             List<Faculty> facultiesC =facultyService.getFacultiesByColor(color);
             return ResponseEntity.ok(facultiesC);
         }
-        ResponseEntity<List<Faculty>> status = (ResponseEntity<List<Faculty>>) ResponseEntity.status(500);
-        return status;
+        return (ResponseEntity<List<Faculty>>) ResponseEntity.status(500);
     }
 }
 
