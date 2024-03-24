@@ -68,9 +68,18 @@ public class FacultyController {
     }
 
     @GetMapping("/name/{name}/color/{color}")
-    public ResponseEntity<List<Faculty>> getFacultiesByNameAndColor(@PathVariable("name") String name, @PathVariable("color") String color){
-        List<Faculty> faculties = facultyService.getFacultiesByNameAndColor(name, color);
-        return ResponseEntity.ok(faculties);
+    public ResponseEntity<List<Faculty>> getFacultiesByNameAndColor(@RequestParam(required = false) String name,
+                                                                    @RequestParam(required = false) String color){
+        if (name != null && !name.isBlank()){
+            List<Faculty> facultiesN = facultyService.getFacultiesByName(name);
+            return ResponseEntity.ok(facultiesN);
+        }
+        if (color != null && !color.isBlank()){
+            List<Faculty> facultiesC =facultyService.getFacultiesByColor(color);
+            return ResponseEntity.ok(facultiesC);
+        }
+        ResponseEntity<List<Faculty>> status = (ResponseEntity<List<Faculty>>) ResponseEntity.status(500);
+        return status;
     }
 }
 
