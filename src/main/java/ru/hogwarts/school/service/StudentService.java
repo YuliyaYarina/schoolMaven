@@ -129,13 +129,37 @@ public class StudentService {
                 .orElse(0);
     }
 
-public int iint(){
-    int sum = Stream.iterate(1, a -> a +1)
-            .limit(1_000_000)
-            .reduce(0, (a, b) -> a + b );
+public long iint() {
+    // method 1
+    long startTime = System.currentTimeMillis();
+    long sum = Stream.iterate(1, a -> a + 1)
+            .limit(100_000_000)
+            .reduce(0, (a, b) -> a + b);
+    long finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 1 занял " + (finishTime - startTime));
+
+    // method 2
+    startTime = System.currentTimeMillis();
+    sum = Stream.iterate(1, a -> a + 1)
+            .limit(100_000_000)
+            .parallel()
+            .reduce(0, (a, b) -> a + b);
+    finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 2 занял " + (finishTime - startTime));
+
+    //method 3
+    startTime = System.currentTimeMillis();
+    sum = 0;
+    for (int i = 0; i <= 100_000_000; i++) {
+        sum += i;
+    }
+    finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 3 занял " + (finishTime - startTime));
+
     return sum;
 }
-
-
 
 }

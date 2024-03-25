@@ -97,7 +97,7 @@ public class StudentController {
     }
 
     @GetMapping("a+b")
-    public int iint(){
+    public long iint(){
         return studentService.iint();
     }
 
