@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -67,11 +67,11 @@ public class StudentService {
 //        return studentRepository.findByIdIgnoreCase(id);
 //    }
 
-    public Collection<Student> findByName(String name){
+    public List<Student> findByName(String name){
         logger.info("findByName method was invoked");
         return studentRepository.findByName(name);
     }
-    public Collection<Student> getByAgeBetween(int ageFrom, int ageTo){
+    public List<Student> getByAgeBetween(int ageFrom, int ageTo){
         logger.info("getAgeBetween method was invoked");
         return studentRepository.findByAgeBetween(ageFrom, ageTo);
     }
@@ -102,11 +102,39 @@ public class StudentService {
         return studentRepository.findFiveStudents();
     }
 
-
     public List<Student> getStudentsByName(String name){
         logger.info("getStudentsByName method was invoked");
         return studentRepository.getStudentsByName(name);
     }
+
+    public List<String> findAllByFirstLetter(String firstLetter){
+        logger.info("findAllByFirstLetter method was invoked");
+
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(i -> i.startsWith(firstLetter))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+     public double averageAgeAll(){
+        logger.info("averageAgeAll method was invoked");
+
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
+    }
+
+public int iint(){
+    int sum = Stream.iterate(1, a -> a +1)
+            .limit(1_000_000)
+            .reduce(0, (a, b) -> a + b );
+    return sum;
+}
 
 
 

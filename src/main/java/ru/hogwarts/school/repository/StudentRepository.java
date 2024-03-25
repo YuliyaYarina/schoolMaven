@@ -19,8 +19,10 @@ int getStudentsMiddleAge();
 
 @Query(value = "SELECT * FROM student ORDER BY id DESC LIMIT 5", nativeQuery = true)
     Collection<Student> findFiveStudents();
-    Collection<Student> findByName(String name);
-    Collection<Student> findByAgeBetween(int ageFrom, int ageTo);
+    List<Student> findByName(String name);
+    List<Student> findByAgeBetween(int ageFrom, int ageTo);
 
     List<Student> getStudentsByName(String name);
+
+//    List<Student> findAll(String name);
 }
