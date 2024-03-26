@@ -8,7 +8,6 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-//import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 

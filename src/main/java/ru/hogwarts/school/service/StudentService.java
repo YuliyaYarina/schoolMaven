@@ -20,17 +20,13 @@ import java.util.stream.Stream;
 public class StudentService {
 
 //    @Value("${avatars.dir.path}")
-//    private String avatarsDir;
+//    private String avatarsDir;     /// не понимаю, это здесь не нужно же?
 
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
-//    private final AvatarRepository avatarRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-
-//        this.avatarRepository = avatarRepository;
-
     }
 
     public Student add(Student student) {
@@ -62,10 +58,6 @@ public class StudentService {
         logger.info("getAll method was invoked");
         return studentRepository.findAll();
     }
-
-//    public Student findById(Long id){
-//        return studentRepository.findByIdIgnoreCase(id);
-//    }
 
     public List<Student> findByName(String name){
         logger.info("findByName method was invoked");

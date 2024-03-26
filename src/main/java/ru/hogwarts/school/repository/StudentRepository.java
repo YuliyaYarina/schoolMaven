@@ -23,6 +23,4 @@ int getStudentsMiddleAge();
     List<Student> findByAgeBetween(int ageFrom, int ageTo);
 
     List<Student> getStudentsByName(String name);
-
-//    List<Student> findAll(String name);
 }

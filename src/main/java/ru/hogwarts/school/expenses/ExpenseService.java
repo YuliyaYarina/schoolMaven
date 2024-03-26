@@ -2,8 +2,6 @@ package ru.hogwarts.school.expenses;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.expenses.Expense;
-import ru.hogwarts.school.expenses.ExpenseRepository;
 
 import java.util.List;
 

@@ -8,7 +8,6 @@ import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/faculty")
 @RestController

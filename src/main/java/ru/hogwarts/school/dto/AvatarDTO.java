@@ -10,11 +10,15 @@ public class AvatarDTO {
 
     private long studentId;
 
-    public AvatarDTO() {
+    public AvatarDTO(Long id, long fileSize, String mediaType, long studentId) {
         this.id = id;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
         this.studentId = studentId;
+    }
+
+    public AvatarDTO() {
+
     }
 
     public Long getId() {
