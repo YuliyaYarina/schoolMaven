@@ -102,4 +102,13 @@ public class StudentController {
         return studentService.iint();
     }
 
+    @GetMapping("print-parallel")
+    public void printParallel( ){
+        studentService.printParallel();
+    }
+
+    @GetMapping("print-synchrorized")
+    public void printSynchronized(){
+        studentService.printSynchronized();
+    }
 }

@@ -154,4 +154,51 @@ public long iint() {
     return sum;
 }
 
+    public void printParallel() {
+        List<String> names = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        System.out.println(Thread.currentThread().getName() + ": " + names.get(0));
+        System.out.println(Thread.currentThread().getName() + ": " + names.get(1));
+
+        new Thread(()-> {
+            System.out.println(Thread.currentThread().getName() + ": " + names.get(2));
+            System.out.println(Thread.currentThread().getName() + ": " + names.get(3));
+        }).start();
+
+        new Thread(()-> {
+            System.out.println(Thread.currentThread().getName() + ": " + names.get(4));
+            System.out.println(Thread.currentThread().getName() + ": " + names.get(5));
+        }).start();
+    }
+
+    public void printSynchronized() {
+        List<String> names = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        System.out.println(names.get(0));
+        System.out.println(names.get(1));
+
+        new Thread(()-> {
+            System.out.println(names.get(2));
+            System.out.println(names.get(3));
+        }).start();
+
+        new Thread(()-> {
+            System.out.println(names.get(4));
+            System.out.println(names.get(5));
+        }).start();
+    }
+    private void printName(String name){
+        System.out.println(Thread.currentThread().getName() + ": " + name);
+    }
+     private synchronized void printSynchronizedName(String name){
+        System.out.println(Thread.currentThread().getName() + ": " + name);
+    }
+
+
 }
