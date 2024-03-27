@@ -80,6 +80,11 @@ public class FacultyController {
         }
         return (ResponseEntity<List<Faculty>>) ResponseEntity.status(500);
     }
+
+    @GetMapping("/longestNameFaculty")
+    public String longestNameFaculty(){
+        return facultyService.longestNameFaculty();
+    }
 }
 
 

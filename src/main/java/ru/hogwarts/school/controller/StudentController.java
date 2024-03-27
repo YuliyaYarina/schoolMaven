@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RequestMapping("/student")
@@ -24,15 +25,30 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
-
     @PostMapping
     public Student add(@RequestBody Student student) {
         return studentService.add(student);
     }
 
-    @GetMapping("{id}")
-    public Student get(@PathVariable Long id) {
-        return studentService.get(id);
+//    @GetMapping("{id}")  ///?
+//    public Student get(@PathVariable Long id) {
+//        return studentService.get(id);
+//    }
+
+    @GetMapping  ///  ???
+    public Collection<Student> findAllByAgeStudent(@RequestParam(required = false) Long id,
+                                                   @RequestParam(required = false) String name,
+                                                   @RequestParam(required = false) Integer age) {
+        if (!(id == null)) {
+            return Collections.singleton(studentService.get(id));
+        }
+        if (name != null && !name.isBlank()) {
+            return studentService.findByName(name);
+        }
+        if (!(age == null)) {
+            return studentService.getByAge(age);
+        }
+        return studentService.getAllStudent();
     }
 
     @PutMapping("{id}")
@@ -45,19 +61,6 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-
-    @GetMapping
-    public Collection<Student> findAllByAgeStudent(@RequestParam(required = false) String name) {
-        if (name != null && !name.isBlank()) {
-            return studentService.findByName(name);
-        }
-        return studentService.getAllStudent();
-    }
-    @GetMapping("getByAge")
-
-    public Collection<Student> getByAge(@RequestParam int age){
-        return studentService.getByAge(age);
-    }
 
     @GetMapping("/max&minAge")
     public Collection<Student> getByAgeBetween(@RequestParam int ageFrom,
@@ -82,5 +85,30 @@ public class StudentController {
     public ResponseEntity<List<Student>> getStudentsByName(@PathVariable("name") String name){
         List<Student> students = studentService.getStudentsByName(name);
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/firstLetter")
+    public List<String> firstLetter(@RequestParam String firstLetter){
+        return studentService.findAllByFirstLetter(firstLetter);
+    }
+
+    @GetMapping("/averageAgeAll")
+    public double averageAgeAll(){
+        return studentService.averageAgeAll();
+    }
+
+    @GetMapping("a+b")
+    public long iint(){
+        return studentService.iint();
+    }
+
+    @GetMapping("print-parallel")
+    public void printParallel( ){
+        studentService.printParallel();
+    }
+
+    @GetMapping("print-synchrorized")
+    public void printSynchronized(){
+        studentService.printSynchronized();
     }
 }

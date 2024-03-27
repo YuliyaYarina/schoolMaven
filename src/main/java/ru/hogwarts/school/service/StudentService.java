@@ -8,29 +8,25 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exeption.StudentNFE;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
 public class StudentService {
 
 //    @Value("${avatars.dir.path}")
-//    private String avatarsDir;
+//    private String avatarsDir;     /// не понимаю, это здесь не нужно же?
 
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
-//    private final AvatarRepository avatarRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-
-//        this.avatarRepository = avatarRepository;
-
     }
 
     public Student add(Student student) {
@@ -63,15 +59,11 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-//    public Student findById(Long id){
-//        return studentRepository.findByIdIgnoreCase(id);
-//    }
-
-    public Collection<Student> findByName(String name){
+    public List<Student> findByName(String name){
         logger.info("findByName method was invoked");
         return studentRepository.findByName(name);
     }
-    public Collection<Student> getByAgeBetween(int ageFrom, int ageTo){
+    public List<Student> getByAgeBetween(int ageFrom, int ageTo){
         logger.info("getAgeBetween method was invoked");
         return studentRepository.findByAgeBetween(ageFrom, ageTo);
     }
@@ -102,12 +94,112 @@ public class StudentService {
         return studentRepository.findFiveStudents();
     }
 
-
     public List<Student> getStudentsByName(String name){
         logger.info("getStudentsByName method was invoked");
         return studentRepository.getStudentsByName(name);
     }
 
+    public List<String> findAllByFirstLetter(String firstLetter){
+        logger.info("findAllByFirstLetter method was invoked");
+
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(i -> i.startsWith(firstLetter))
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+     public double averageAgeAll(){
+        logger.info("averageAgeAll method was invoked");
+
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0);
+    }
+
+public long iint() {
+    // method 1
+    long startTime = System.currentTimeMillis();
+    long sum = Stream.iterate(1, a -> a + 1)
+            .limit(100_000_000)
+            .reduce(0, (a, b) -> a + b);
+    long finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 1 занял " + (finishTime - startTime));
+
+    // method 2
+    startTime = System.currentTimeMillis();
+    sum = Stream.iterate(1, a -> a + 1)
+            .limit(100_000_000)
+            .parallel()
+            .reduce(0, (a, b) -> a + b);
+    finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 2 занял " + (finishTime - startTime));
+
+    //method 3
+    startTime = System.currentTimeMillis();
+    sum = 0;
+    for (int i = 0; i <= 100_000_000; i++) {
+        sum += i;
+    }
+    finishTime = System.currentTimeMillis();
+
+    logger.info("Метод 3 занял " + (finishTime - startTime));
+
+    return sum;
+}
+
+    public void printParallel() {
+        List<String> names = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        printName(names.get(1));
+        printName(names.get(2));
+
+        new Thread(()-> {
+            printName(names.get(2));
+            printName(names.get(3));
+        }).start();
+
+        new Thread(()-> {
+            printName(names.get(4));
+            printName(names.get(5));
+        }).start();
+    }
+
+    public void printSynchronized() {
+        List<String> names = studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        printSynchronizedName(names.get(0));
+        printSynchronizedName(names.get(1));
+
+        new Thread(()-> {
+            System.out.println(names.get(2));
+            System.out.println(names.get(3));
+        }).start();
+
+        new Thread(()-> {
+            System.out.println(names.get(4));
+            System.out.println(names.get(5));
+        }).start();
+
+    }
+    private void printName(String name){
+        System.out.println(Thread.currentThread().getName() + ": " + name);
+    }
+     private synchronized void printSynchronizedName(String name){
+        System.out.println(Thread.currentThread().getName() + ": " + name);
+    }
 
 
 }
