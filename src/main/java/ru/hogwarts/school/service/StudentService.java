@@ -160,17 +160,17 @@ public long iint() {
                 .map(Student::getName)
                 .toList();
 
-        System.out.println(Thread.currentThread().getName() + ": " + names.get(0));
-        System.out.println(Thread.currentThread().getName() + ": " + names.get(1));
+        printName(names.get(1));
+        printName(names.get(2));
 
         new Thread(()-> {
-            System.out.println(Thread.currentThread().getName() + ": " + names.get(2));
-            System.out.println(Thread.currentThread().getName() + ": " + names.get(3));
+            printName(names.get(2));
+            printName(names.get(3));
         }).start();
 
         new Thread(()-> {
-            System.out.println(Thread.currentThread().getName() + ": " + names.get(4));
-            System.out.println(Thread.currentThread().getName() + ": " + names.get(5));
+            printName(names.get(4));
+            printName(names.get(5));
         }).start();
     }
 
@@ -180,8 +180,8 @@ public long iint() {
                 .map(Student::getName)
                 .toList();
 
-        System.out.println(names.get(0));
-        System.out.println(names.get(1));
+        printSynchronizedName(names.get(0));
+        printSynchronizedName(names.get(1));
 
         new Thread(()-> {
             System.out.println(names.get(2));
@@ -192,6 +192,7 @@ public long iint() {
             System.out.println(names.get(4));
             System.out.println(names.get(5));
         }).start();
+
     }
     private void printName(String name){
         System.out.println(Thread.currentThread().getName() + ": " + name);
